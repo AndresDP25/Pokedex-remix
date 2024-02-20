@@ -43,7 +43,7 @@ export const PokeGrid: React.FC<Props> = ({ pokemons, checkPokemon }) => {
 					onClick={clearFavorites}
 					className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-red active:bg-red-800"
 				>
-					Borrar Favoritos
+					Delete Favorites
 				</button>
 			</div>
 			<div className="mx-auto max-w-screen-xl justify-items-center gap-4 p-8 lg:grid-cols-4 grid  md:grid-cols-3 sm:grid-cols-2">
