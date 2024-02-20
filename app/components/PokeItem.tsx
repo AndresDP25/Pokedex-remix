@@ -4,49 +4,58 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { Link } from "@remix-run/react"
 import { PokemonDetails } from "~/types"
-import { background, PokeTypes } from "~/utils/BackgroundsByType";
+import { background } from "~/utils/BackgroundsByType";
 
 interface Props {
 	urlPokemon: string
 	checkPokemon: (pokemon: PokemonDetails) => void;
+	filterPokemon: () => void;
 }
 
-export const PokeItem: React.FC<Props> = ({ urlPokemon, checkPokemon }) => {
+export const PokeItem: React.FC<Props> = ({ urlPokemon, checkPokemon, filterPokemon }) => {
 	const { loading, pokemon, getPokemonByUrl } = usePokemon()
 	const [isFavorite, setIsFavorite] = useState(false);
+	const [loaded, setLoaded] = useState(false);
 
 	const handleCheckboxChange = (event: any) => {
 		setIsFavorite(!isFavorite);
-	
+
 		if (pokemon) {
-		  const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-		  const updatedFavorites = isFavorite
-			? favorites.filter((fav: PokemonDetails) => fav.id !== pokemon.id)
-			: [...favorites, pokemon];
-		  localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+			const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+			const updatedFavorites = isFavorite
+				? favorites.filter((fav: PokemonDetails) => fav.id !== pokemon.id)
+				: [...favorites, pokemon];
+			localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
 		}
-	  };
+		
+		filterPokemon();
+	};
 
 	/* @ts-ignore */
 	const backgroundSelected = background[pokemon?.types[0]?.type?.name];
 
 	const loadFavoriteState = () => {
 		const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-		console.log('fav', favorites)
-		// console.log('favid', favorites.id)
-		console.log('poke', pokemon)
-		// const test = favorites.some((fav: PokemonDetails) => fav.id == pokemon?.id)
-		setIsFavorite(favorites.some((fav: PokemonDetails) => fav.id == pokemon?.id));
-		// console.log(test)
-
-	  };
+		if (pokemon) { setIsFavorite(favorites.some((fav: PokemonDetails) => fav.id == pokemon?.id)); }
+	};
 
 	useEffect(() => {
-		if (urlPokemon) {
-			getPokemonByUrl(urlPokemon);
+		const fetchData = async () => {
+			if (urlPokemon) {
+				await getPokemonByUrl(urlPokemon);
+				setLoaded(true);
+			}
+		};
+
+		fetchData();
+	}, [urlPokemon,]);
+
+	useEffect(() => {
+		if (loaded) {
 			loadFavoriteState();
 		}
-	}, [urlPokemon])
+	}, [loaded, isFavorite, localStorage.getItem('favorites')]);
+	
 
 	const setPokemon = () => {
 		if (pokemon) {
@@ -59,9 +68,9 @@ export const PokeItem: React.FC<Props> = ({ urlPokemon, checkPokemon }) => {
 			{loading ?
 				<div className="w-24 h-24 flex items-center justify-items-center"><AiOutlineLoading3Quarters className="animate-spin w-7 h-7" /></div>
 				: (
-					<div className="w-full max-w-350px rounded-md flex flex-col text-decoration-none text-inherit border"	
-					style={{ borderColor: backgroundSelected }}	>
-						<div className="flex flex-col border border-transparent border-start-start-radius: 0.5rem hover:brightness-150 transition duration-300"	onClick={setPokemon}>
+					<div className="w-full max-w-350px rounded-md flex flex-col text-decoration-none text-inherit border"
+						style={{ borderColor: backgroundSelected }}	>
+						<div className="flex flex-col border border-transparent border-start-start-radius: 0.5rem hover:brightness-150 transition duration-300" onClick={setPokemon}>
 							<Link className="cursor-pointer" to={`/${pokemon?.id}`}>
 								<span className="text-right p-4 pt-0 text-xl" style={{ color: backgroundSelected }}	>#{pokemon?.id}</span>
 								<div
@@ -69,7 +78,7 @@ export const PokeItem: React.FC<Props> = ({ urlPokemon, checkPokemon }) => {
 									<img
 										src={pokemon?.sprites.other.dream_world.front_default}
 										alt={pokemon?.name}
-										className="w-full h-full object-contain p-2 max-h-64"/>
+										className="w-full h-full object-contain p-2 max-h-64" />
 								</div>
 							</Link>
 							<div

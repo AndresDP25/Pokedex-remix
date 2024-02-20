@@ -24,7 +24,7 @@ export default function $pokemonId() {
       <Header pokemon={pokemon}/>
       <div className="max-w-650px bg-white flex flex-col items-center rounded-md md:relative mb-36">
         <img
-          className="brightness-150 sm:w-64 sm:h-64 w-32 h-32 max-h-full md:absolute md:top-0 md:-translate-y-48 mt-4"
+          className="brightness-150 sm:w-64 sm:h-64 w-32 h-32 max-h-full md:absolute md:bottom-80 mt-4"
           src={pokemon?.sprites?.other?.dream_world?.front_default ||
             pokemon?.sprites?.front_default}
           alt={pokemon?.name}

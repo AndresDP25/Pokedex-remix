@@ -1,6 +1,5 @@
-import type { MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react"
-import { Header, PokeGrid, Pagination, PokemonInfo } from "../components"   
+import { Header, PokeGrid, Pagination } from "../components"   
 import { getPokemonByUrlApi, getPokemonsApi } from "../api"
 import { useState } from "react";
 import { PokemonData, PokemonDetails } from "~/types";

@@ -10,9 +10,6 @@ interface PaginationProps {
 }
 
 
-
-
-
 export const Pagination: React.FC<PaginationProps> = ({ loadMore, nextUrl, prevUrl }) => {
 	const [page, setPage] = useState(1)
 
@@ -28,7 +25,8 @@ export const Pagination: React.FC<PaginationProps> = ({ loadMore, nextUrl, prevU
 	return (
 		<div className="flex items-center w-full my-5 gap-4 justify-center">
 			{prevUrl && (
-				<div className="flex gap-2 btn rounded-md bg-slate-700 text-white font-bold text-xl p-2 hover:cursor-pointer hover:bg-slate-500" onClick={() => {loadMore(prevUrl); prev()}}>
+				<div className="flex gap-2 btn rounded-md bg-slate-700 text-white font-bold text-xl p-2 hover:cursor-pointer hover:bg-slate-500" 
+					onClick={() => {loadMore(prevUrl); prev()}}>
 					<Button	>
 						<IoIosArrowBack size={24} />
 					</Button>
@@ -36,7 +34,8 @@ export const Pagination: React.FC<PaginationProps> = ({ loadMore, nextUrl, prevU
 			)}
 			<div className="font-bold text-xl">{page}</div>
 			{nextUrl && (
-				<div className="flex gap-2 btn rounded-md bg-slate-700 text-white font-bold text-xl p-2 hover:cursor-pointer hover:bg-slate-500" onClick={() => {loadMore(nextUrl); next(); }}>
+				<div className="flex gap-2 btn rounded-md bg-slate-700 text-white font-bold text-xl p-2 hover:cursor-pointer hover:bg-slate-500" 
+					onClick={() => {loadMore(nextUrl); next(); }}>
 					<Button>
 						<IoIosArrowForward size={24} />
 					</Button>

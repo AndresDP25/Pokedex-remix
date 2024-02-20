@@ -1,7 +1,7 @@
 import { env } from "../utils"
 
 export async function getPokemonsApi() {
-	const url = `${env.BASE_PATH}/pokemon?limit=16`
+	const url = `${env.BASE_PATH}/pokemon`
 
 	try {
 		const response = await fetch(url)
